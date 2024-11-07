@@ -5,6 +5,7 @@
 package com.tayrific.BankManagement.entity;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Min;
 
 
 @Entity //JPA entity - mapped to a table in DB
@@ -19,13 +20,14 @@ public class Transaction {
     private TransactionType transactionType;
     
     @Column(nullable = false)
+    @Min(value = 0, message = "Amount must be positive")
     private double amount;
     
     @Column(nullable = false)
     private java.time.Instant timestamp;
     
     @ManyToOne // Many accounts can belong to one user
-    @JoinColumn(name = "accountid", nullable = false) // Foreign key reference to user
+    @JoinColumn(name = "accountId", nullable = false) // Foreign key reference to user
     private Account account;
     
     public enum TransactionType {
@@ -41,6 +43,8 @@ public class Transaction {
         this.timestamp = timestamp;
         this.account = account;
     }
+     
+
     
     public Transaction() {
     }
@@ -88,7 +92,8 @@ public class Transaction {
 
     @Override
     public String toString() {
-        return "Transaction{" + "transactionID=" + transactionID + ", transactionType=" + transactionType + ", amount=" + amount + ", timestamp=" + timestamp + ", account=" + account + '}';
+        return String.format("Transaction{transactionID=%d, transactionType=%s, amount=%.2f, timestamp=%s, accountID=%d}",
+        transactionID, transactionType, amount, timestamp, account.getAccountId());
     }
 
 }

@@ -8,19 +8,23 @@ import com.tayrific.BankManagement.DTO.AccountDTO;
 import com.tayrific.BankManagement.entity.Account;
 import org.springframework.stereotype.Service;
 
-/**
- *
- * @author tayyi
- */
+
 @Service
 public class AccountMapper {
     public AccountDTO toDTO(Account account) {
         return new AccountDTO(
-                account.getAccountID(),
+                account.getAccountId(),
                 account.getAccountNumber(),
                 account.getAccountType(),
                 account.getBalance(),
-                account.getUser().getUserId()
+                account.getUser().getUserId()   
         );
+    }
+    
+    public Account toEntity(AccountDTO accountDTO) {
+        Account account = new Account();
+        account.setAccountId(accountDTO.getAccountId());
+        // Set other fields as needed
+        return account;
     }
 }

@@ -11,7 +11,7 @@ import com.tayrific.BankManagement.entity.Account.AccountType;
  * @author tayyi
  */
 public class AccountDTO {
-    private int accountID;
+    private int accountId;
     private long accountNumber;
     private AccountType accountType;
     private double balance;
@@ -19,7 +19,7 @@ public class AccountDTO {
 
     // Constructor (You can add a constructor if needed)
     public AccountDTO(int accountID, long accountNumber, AccountType accountType, double balance, int userId) {
-        this.accountID = accountID;
+        this.accountId = accountID;
         this.accountNumber = accountNumber;
         this.accountType = accountType;
         this.balance = balance;
@@ -27,12 +27,12 @@ public class AccountDTO {
     }
 
     // Getters and setters
-    public int getAccountID() {
-        return accountID;
+    public int getAccountId() {
+        return accountId;
     }
 
     public void setAccountID(int accountID) {
-        this.accountID = accountID;
+        this.accountId = accountID;
     }
 
     public long getAccountNumber() {

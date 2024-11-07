@@ -15,7 +15,7 @@ import java.util.List;
 public interface AccountService {
     
     public Account createAccount(Account account);
-    public AccountDTO getAccountByID(int accountId);
+    public AccountDTO getAccountById(int accountId);
     public List<AccountDTO> getUsersAccounts(int userId);
     public AccountDTO depositMoney(int accountId, double amount);
     public AccountDTO withdrawMoney(int accountId, double amount);

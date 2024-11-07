@@ -13,7 +13,7 @@ import jakarta.validation.constraints.Min;
 public class Account {
     @Id //Primary key
     @GeneratedValue(strategy = GenerationType.IDENTITY) //Auto generate values
-    private int accountID;
+    private int accountId;
      
     @Column(nullable = false, unique = true)
     private long accountNumber;
@@ -27,7 +27,7 @@ public class Account {
     private double balance;
     
     @ManyToOne // Many accounts can belong to one user
-    @JoinColumn(name = "userid", nullable = false) // Foreign key reference to user
+    @JoinColumn(name = "userId", nullable = false) // Foreign key reference to user
     private User user;
     
     public enum AccountType {
@@ -47,12 +47,12 @@ public class Account {
 
     
     //getters and setters
-    public int getAccountID() {
-        return accountID;
+    public int getAccountId() {
+        return accountId;
     }
 
-    public void setAccountID(int accountID) {
-        this.accountID = accountID;
+    public void setAccountId(int accountID) {
+        this.accountId = accountID;
     }
 
     public long getAccountNumber() {
@@ -89,6 +89,6 @@ public class Account {
 
     @Override
     public String toString() {
-        return "Account{" + "accountID=" + accountID + ", accountNumber=" + accountNumber + ", accountType=" + accountType + ", balance=" + balance + ", user=" + user + '}';
+        return "Account{" + "accountID=" + accountId + ", accountNumber=" + accountNumber + ", accountType=" + accountType + ", balance=" + balance + ", user=" + user + '}';
     }   
 }

@@ -30,7 +30,7 @@ public class AccountServiceImpl implements AccountService {
     }
 
     @Override
-    public AccountDTO getAccountByID(int accountId) {
+    public AccountDTO getAccountById(int accountId) {
         Account account = repo.findById(accountId)
                 .orElseThrow(() -> new RuntimeException("Account not found"));
         
@@ -39,7 +39,7 @@ public class AccountServiceImpl implements AccountService {
 
     @Override
     public List<AccountDTO> getUsersAccounts(int userId) {
-        List<Account> allAccounts = repo.findByUserId(userId);
+        List<Account> allAccounts = repo.findByUser_userId(userId);
         List<AccountDTO> allAccountsDTO = new ArrayList<>();
         for (Account account : allAccounts) {
             allAccountsDTO.add(accountMapper.toDTO(account));
@@ -56,7 +56,7 @@ public class AccountServiceImpl implements AccountService {
         account.setBalance(account.getBalance() + amount);
         repo.save(account);
 
-        return getAccountByID(accountId);
+        return getAccountById(accountId);
     }
 
     @Override
@@ -72,7 +72,7 @@ public class AccountServiceImpl implements AccountService {
         account.setBalance(account.getBalance() - amount);
         repo.save(account);
 
-        return getAccountByID(accountId);
+        return getAccountById(accountId);
     }
 
     @Override

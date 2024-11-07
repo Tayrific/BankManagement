@@ -4,13 +4,15 @@
  */
 package com.tayrific.BankManagement.service;
 
+import com.tayrific.BankManagement.DTO.AccountDTO;
+import com.tayrific.BankManagement.DTO.TransactionDTO;
 import com.tayrific.BankManagement.entity.Transaction;
-import com.tayrific.BankManagement.entity.Account;
+
 import java.util.List;
 
 public interface TransactionService {
     
-    void logTransaction(Transaction.TransactionType transactionType, double amount, Account account);   
-    List<Transaction> getTransactionsByAccount(Account account);
+       void logTransaction(Transaction.TransactionType transactionType, double amount, AccountDTO accountDTO);   
+       List<TransactionDTO> getTransactionsByAccount(int accountId);
     
 }
