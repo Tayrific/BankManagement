@@ -10,7 +10,7 @@ import java.util.List;
 public interface UserService {
 
     public User createUser(User user);
-    public User getUserbyID(int userId);
+    public User getUserbyId(int userId);
     public List<User> getAllUsers();
     public User updateUser(int userId, User userDetails);
     public void deleteUser(int userId);

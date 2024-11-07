@@ -90,9 +90,5 @@ public class Transaction {
     public String toString() {
         return "Transaction{" + "transactionID=" + transactionID + ", transactionType=" + transactionType + ", amount=" + amount + ", timestamp=" + timestamp + ", account=" + account + '}';
     }
-    
-    
-      
-      
-     
+
 }

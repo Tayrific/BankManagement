@@ -16,7 +16,7 @@ public class User {
     
     @Id //Primary key
     @GeneratedValue(strategy = GenerationType.IDENTITY) //Auto generate values
-    private int userID;
+    private int userId;
     
     @Column(nullable = false)
     @NotBlank(message = "Must enter a first name")
@@ -56,12 +56,12 @@ public class User {
     }    
    
      // Getters and Setters
-    public int getUserID() {
-        return userID;
+    public int getUserId() {
+        return userId;
     }
 
     public void setUserID(int userID) {
-        this.userID = userID;
+        this.userId = userID;
     }
 
     public String getFirstName() {
@@ -106,7 +106,7 @@ public class User {
 
     @Override
     public String toString() {
-        return "User{" + "userID=" + userID + ", firstName=" + firstName + ", lastName=" + lastName + ", email=" + email + '}';
+        return "User{" + "userID=" + userId + ", firstName=" + firstName + ", lastName=" + lastName + ", email=" + email + '}';
     }
     
 }
