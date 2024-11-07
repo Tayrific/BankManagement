@@ -4,11 +4,13 @@
  */
 package com.tayrific.BankManagement.Repository;
 
+import com.tayrific.BankManagement.entity.Account;
 import com.tayrific.BankManagement.entity.Transaction;
+import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
 public interface TransactionRepository extends JpaRepository<Transaction, Integer> {
-    
+    List<Transaction> findByAccount(Account account);
 }
