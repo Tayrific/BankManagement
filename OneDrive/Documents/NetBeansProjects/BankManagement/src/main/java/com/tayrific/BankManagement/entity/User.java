@@ -3,6 +3,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
 package com.tayrific.BankManagement.entity;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
@@ -35,6 +36,7 @@ public class User {
     private String phoneNumber;
     
     @Column(nullable = false)
+    @JsonIgnore
     private String password; 
     
     @OneToMany(mappedBy = "user") // Relationship with Account

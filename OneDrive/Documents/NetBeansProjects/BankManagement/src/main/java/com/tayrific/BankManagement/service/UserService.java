@@ -8,10 +8,11 @@ import com.tayrific.BankManagement.entity.User;
 import java.util.List;
 
 public interface UserService {
+
     public User createUser(User user);
-    public User getUserDetails(int userId);
+    public User getUserbyID(int userId);
     public List<User> getAllUsers();
-    public void updateUser(int userId);
+    public User updateUser(int userId, User userDetails);
     public void deleteUser(int userId);
    
 }
