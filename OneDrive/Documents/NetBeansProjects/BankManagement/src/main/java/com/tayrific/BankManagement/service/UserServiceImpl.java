@@ -1,74 +1,87 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package com.tayrific.BankManagement.service;
 
-import java.util.List;
-import java.util.Optional;
+import com.tayrific.BankManagement.DTO.UserDTO;
+import com.tayrific.BankManagement.Repository.UserRepository;
+import com.tayrific.BankManagement.entity.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.tayrific.BankManagement.Repository.UserRepository;
-import com.tayrific.BankManagement.entity.User;
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 
 @Service
 public class UserServiceImpl implements UserService {
 
     @Autowired
-    private UserRepository repo;   
-    
-    @Override
-    public User createUser(User user) {
-        User userSave  = repo.save(user);
-        return userSave;            
+    private UserRepository repo;
+
+
+
+    // Convert User entity to UserDTO
+    private UserDTO convertToDTO(User user) {
+        UserDTO userDTO = new UserDTO();
+        userDTO.setFirstName(user.getFirstName());
+        userDTO.setLastName(user.getLastName());
+        userDTO.setEmail(user.getEmail());
+        userDTO.setPhoneNumber(user.getPhoneNumber());
+        return userDTO;
     }
 
     @Override
-    public User getUserbyId(int userId) {
+    public UserDTO createUser(User user) {
+
+        // Save the user and convert to DTO without password
+        user = repo.save(user);
+        return convertToDTO(user);
+    }
+
+    @Override
+    public UserDTO getUserbyId(int userId) {
         Optional<User> user = repo.findById(userId);
         if (user.isEmpty()) {
-            throw new RuntimeException("Userid does not exist");
+            throw new RuntimeException("User does not exist");
         }
-        User userFound = user.get();
-        return userFound;
+        return convertToDTO(user.get());
     }
 
     @Override
-    public List<User> getAllUsers() {
+    public List<UserDTO> getAllUsers() {
+        // Convert all User entities to UserDTOs and return the list
         List<User> allUsers = repo.findAll();
-        return allUsers;
+        return allUsers.stream()
+                .map(this::convertToDTO)  // Map each User to a UserDTO
+                .collect(Collectors.toList());
     }
 
     @Override
-    public User updateUser(int userId, User userDetails) {
-        User userToUpdate = getUserbyId(userId);  // fetch the existing user by ID
+    public UserDTO updateUser(int userId, UserDTO userDTO) {
+        // Fetch the existing user by ID
+        User userToUpdate = repo.findById(userId)
+                .orElseThrow(() -> new RuntimeException("User not found"));
 
         // Update fields if provided in userDetails
-        if (userDetails.getFirstName() != null) {
-            userToUpdate.setFirstName(userDetails.getFirstName());
+        if (userDTO.getFirstName() != null) {
+            userToUpdate.setFirstName(userDTO.getFirstName());
         }
-        if (userDetails.getLastName() != null) {
-            userToUpdate.setLastName(userDetails.getLastName());
+        if (userDTO.getLastName() != null) {
+            userToUpdate.setLastName(userDTO.getLastName());
         }
-        if (userDetails.getEmail() != null) {
-            userToUpdate.setEmail(userDetails.getEmail());
+        if (userDTO.getEmail() != null) {
+            userToUpdate.setEmail(userDTO.getEmail());
         }
-        if (userDetails.getPhoneNumber() != null) {
-            userToUpdate.setPhoneNumber(userDetails.getPhoneNumber());
-        }
-        if (userDetails.getPassword() != null) {
-            userToUpdate.setPassword(userDetails.getPassword());
+        if (userDTO.getPhoneNumber() != null) {
+            userToUpdate.setPhoneNumber(userDTO.getPhoneNumber());
         }
 
-        // Save the updated user back to the repository
-        return repo.save(userToUpdate);
+        // Save the updated user and convert to DTO
+        User updatedUser = repo.save(userToUpdate);
+        return convertToDTO(updatedUser);
     }
 
     @Override
     public void deleteUser(int userId) {
         repo.deleteById(userId);
     }
-    
 }

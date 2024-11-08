@@ -4,51 +4,59 @@
  */
 package com.tayrific.BankManagement.controller;
 
+import com.tayrific.BankManagement.DTO.UserDTO;
 import com.tayrific.BankManagement.entity.User;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
 import com.tayrific.BankManagement.service.UserService;
-import java.util.List;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/users")
 @CrossOrigin
 public class UserController {
-    
+
     @Autowired
     UserService service;
-    
-    
+
+    // Create user - No password in DTO, password encoded in service
     @PostMapping("/add")
-    public ResponseEntity<User> createUser(@RequestBody User user) {
-        User createUser = service.createUser(user);
+    public ResponseEntity<?> createUser(@RequestBody User user) {
+        if (user.getPassword() == null || user.getPassword().isEmpty()) {
+            return ResponseEntity.badRequest().body("Password cannot be null or empty");
+        }
+        UserDTO createUser = service.createUser(user);
         return ResponseEntity.status(HttpStatus.CREATED).body(createUser);
     }
-    
+
+    // Get user by ID
     @GetMapping("/{userId}")
-    public ResponseEntity<User> getUserByID(@PathVariable int userId) {
-        User user = service.getUserbyId(userId);
+    public ResponseEntity<UserDTO> getUserByID(@PathVariable int userId) {
+        UserDTO user = service.getUserbyId(userId);
         return ResponseEntity.ok(user);
     }
-    
+
+    // Get all users
     @GetMapping("/")
-    public ResponseEntity<List<User>> getAllUsers() {
-        List<User> allUsers = service.getAllUsers();
+    public ResponseEntity<List<UserDTO>> getAllUsers() {
+        List<UserDTO> allUsers = service.getAllUsers();
         return ResponseEntity.ok(allUsers);
     }
-    
+
+    // Update user
     @PutMapping("/{userId}")
-    public ResponseEntity<User> updateUser(@PathVariable int userId,  @RequestBody User userDetails){
-        User updateUser = service.updateUser(userId, userDetails);
-        return ResponseEntity.ok(updateUser);
+    public ResponseEntity<UserDTO> updateUser(@PathVariable int userId, @RequestBody UserDTO userDTO) {
+        UserDTO updatedUser = service.updateUser(userId, userDTO);
+        return ResponseEntity.ok(updatedUser);
     }
-    
+
+    // Delete user
     @DeleteMapping("/{userId}")
     public ResponseEntity<Void> deleteUser(@PathVariable int userId) {
         service.deleteUser(userId);
         return ResponseEntity.noContent().build();
     }
-    
 }

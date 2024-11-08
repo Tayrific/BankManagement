@@ -5,7 +5,7 @@
 package com.tayrific.BankManagement.DTO;
 
 import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Pattern;
 
 /**
  *
@@ -13,17 +13,27 @@ import jakarta.validation.constraints.NotBlank;
  */
 public class UserDTO {
 
-    @NotBlank(message = "First name is required")
     private String firstName;
-
-    @NotBlank(message = "Last name is required")
     private String lastName;
 
-    @NotBlank(message = "Email is required")
     @Email(message = "Invalid email format")
     private String email;
-
-    // No password field for security reasons
+    
+    @Pattern(regexp = "^(\\+\\d{1,3}[- ]?)?\\d{10}$", message = "Invalid phone number") // Validates phone number format
+    private String phoneNumber;
+    
+    
+    public UserDTO(String firstName, String lastName, String email, String phoneNumber) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.email = email;
+        this.phoneNumber = phoneNumber;
+    }
+    
+    public UserDTO() {
+        
+    }
+    
 
     // Getters and setters
     public String getFirstName() {
@@ -48,5 +58,13 @@ public class UserDTO {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+    
+    public String getPhoneNumber() {
+        return phoneNumber;
+    }
+
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
     }
 }

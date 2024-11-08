@@ -4,15 +4,16 @@
  */
 package com.tayrific.BankManagement.service;
 
+import com.tayrific.BankManagement.DTO.UserDTO;
 import com.tayrific.BankManagement.entity.User;
 import java.util.List;
 
 public interface UserService {
 
-    public User createUser(User user);
-    public User getUserbyId(int userId);
-    public List<User> getAllUsers();
-    public User updateUser(int userId, User userDetails);
+    public UserDTO createUser(User user);
+    public UserDTO getUserbyId(int userId);
+    public List<UserDTO> getAllUsers();
+    public UserDTO  updateUser(int userId, UserDTO userDTO);
     public void deleteUser(int userId);
    
 }

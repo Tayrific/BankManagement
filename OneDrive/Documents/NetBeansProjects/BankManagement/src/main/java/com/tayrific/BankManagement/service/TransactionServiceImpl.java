@@ -10,10 +10,11 @@ import com.tayrific.BankManagement.Repository.AccountRepository;
 import com.tayrific.BankManagement.Repository.TransactionRepository;
 import com.tayrific.BankManagement.entity.Account;
 import com.tayrific.BankManagement.entity.Transaction;
+
 import jakarta.transaction.Transactional;
 import java.time.Instant;
-import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -25,8 +26,7 @@ public class TransactionServiceImpl implements TransactionService {
     private TransactionRepository repo;
     @Autowired
     private AccountRepository accountRepo;
-    @Autowired
-    private AccountMapper accountMapper;
+
 
 
     @Override
@@ -48,17 +48,14 @@ public class TransactionServiceImpl implements TransactionService {
 
         List<Transaction> transactions = repo.findByAccount(account);
         
-        // Map transactions to DTOs
-        List<TransactionDTO> transactionDTOs = new ArrayList<>();
-        for (Transaction transaction : transactions) {
-            transactionDTOs.add(new TransactionDTO(
+        return repo.findByAccount(account).stream()
+            .map(transaction -> new TransactionDTO(
                     transaction.getTransactionID(),
                     transaction.getTransactionType().toString(),
                     transaction.getAmount(),
                     transaction.getTimestamp(),
                     transaction.getAccount().getAccountId()
-            ));
-        }
-        return transactionDTOs;
+            ))
+            .collect(Collectors.toList());
     }
 }

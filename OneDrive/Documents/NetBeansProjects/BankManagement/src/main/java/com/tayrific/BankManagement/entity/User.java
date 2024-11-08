@@ -36,7 +36,6 @@ public class User {
     private String phoneNumber;
     
     @Column(nullable = false)
-    @JsonIgnore
     private String password; 
     
     @OneToMany(mappedBy = "user") // Relationship with Account

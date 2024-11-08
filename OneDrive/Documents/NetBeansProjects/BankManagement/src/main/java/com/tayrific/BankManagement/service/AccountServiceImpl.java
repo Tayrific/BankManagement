@@ -10,7 +10,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.tayrific.BankManagement.Repository.AccountRepository;
+import com.tayrific.BankManagement.Repository.TransactionRepository;
 import com.tayrific.BankManagement.entity.Account;
+import com.tayrific.BankManagement.entity.Transaction;
 import jakarta.transaction.Transactional;
 import java.util.ArrayList;
 
@@ -23,6 +25,9 @@ public class AccountServiceImpl implements AccountService {
     
     @Autowired
     private AccountMapper accountMapper;
+    
+    @Autowired
+    private TransactionRepository transactionRepo;
 
     @Override
     public Account createAccount(Account account) {
@@ -47,33 +52,51 @@ public class AccountServiceImpl implements AccountService {
         return allAccountsDTO;
     }
 
-    @Override
-    @Transactional
-    public AccountDTO depositMoney(int accountId, double amount) {
-        Account account = repo.findById(accountId)
-                .orElseThrow(() -> new RuntimeException("Account not found"));
-        
-        account.setBalance(account.getBalance() + amount);
-        repo.save(account);
+        @Override
+        @Transactional
+        public AccountDTO depositMoney(int accountId, double amount) {
+            Account account = repo.findById(accountId)
+                    .orElseThrow(() -> new RuntimeException("Account not found"));
 
-        return getAccountById(accountId);
-    }
+            account.setBalance(account.getBalance() + amount);
+            repo.save(account);
 
-    @Override
-    @Transactional
-    public AccountDTO withdrawMoney(int accountId, double amount) {
-        Account account = repo.findById(accountId)
-                .orElseThrow(() -> new RuntimeException("Account not found"));
+            // Log the deposit transaction
+            Transaction depositTransaction = new Transaction(
+                    Transaction.TransactionType.DEPOSIT,
+                    amount,
+                    java.time.Instant.now(),
+                    account
+            );
+            transactionRepo.save(depositTransaction);
 
-        if (account.getBalance() < amount) {
-            throw new RuntimeException("Insufficient funds");
+            return getAccountById(accountId);
         }
 
-        account.setBalance(account.getBalance() - amount);
-        repo.save(account);
+        @Override
+        @Transactional
+        public AccountDTO withdrawMoney(int accountId, double amount) {
+            Account account = repo.findById(accountId)
+                    .orElseThrow(() -> new RuntimeException("Account not found"));
 
-        return getAccountById(accountId);
-    }
+            if (account.getBalance() < amount) {
+                throw new RuntimeException("Insufficient funds");
+            }
+
+            account.setBalance(account.getBalance() - amount);
+            repo.save(account);
+
+            // Log the withdrawal transaction
+            Transaction withdrawTransaction = new Transaction(
+                    Transaction.TransactionType.WITHDRAWAL,
+                    amount,
+                    java.time.Instant.now(),
+                    account
+            );
+            transactionRepo.save(withdrawTransaction);
+
+            return getAccountById(accountId);
+        }
 
     @Override
     public void deleteAccount(int accountId) {

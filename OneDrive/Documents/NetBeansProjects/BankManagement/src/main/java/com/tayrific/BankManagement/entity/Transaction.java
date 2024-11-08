@@ -32,9 +32,7 @@ public class Transaction {
     
     public enum TransactionType {
         DEPOSIT,
-        WITHDRAWAL,
-        TRANSFER,
-        PAYMENT
+        WITHDRAWAL
     }
     
      public Transaction(TransactionType transactionType, double amount, java.time.Instant timestamp, Account account) {
